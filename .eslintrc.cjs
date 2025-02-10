@@ -1,16 +1,13 @@
 /* eslint-env node */
-require('@rushstack/eslint-patch/modern-module-resolution')
+require("@rushstack/eslint-patch/modern-module-resolution")
 
 module.exports = {
-  root: true,
-  extends: [
-    "plugin:vue/vue3-recommended",
-    "prettier"
-  ],
-  parserOptions: {
-    ecmaVersion: 'latest'
-  },
-  chainWebpack: config => {
-    config.module.rules.delete('eslint');
-  }
+	root: true,
+	extends: ["plugin:vue/vue3-recommended", "prettier"],
+	parserOptions: {
+		ecmaVersion: "latest"
+	},
+	chainWebpack: (config) => {
+		config.module.rules.delete("eslint")
+	}
 }
