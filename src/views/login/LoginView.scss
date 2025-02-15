@@ -20,7 +20,7 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
-	background-color: ui.$colors-ui-blue;
+	background-color: ui.$colors-ui-black;
 	box-shadow: 4px 8px #656565;
 	row-gap: ui.$spacing-medium-large;
 
@@ -34,4 +34,33 @@
 	& .input-container {
 		padding: 16px;
 	}
+}
+
+@media screen and (min-width: 769px) {
+	.login-box {
+		width: 750px;
+		height: 50vh;
+	}
+}
+
+@media screen and (min-width: 1200px) {
+	.login-box {
+		width: 500px;
+		height: unset;
+	}
+}
+
+.input-container {
+	width: 400px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	row-gap: ui.$spacing-small;
+}
+
+.button-container {
+	width: 100%;
+	display: flex;
+	column-gap: ui.$spacing-extra-small;
+	padding: ui.$spacing-medium;
 }

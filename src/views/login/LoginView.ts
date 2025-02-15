@@ -31,8 +31,8 @@ export default {
 
 			this.errorMsg = ""
 			if (
-				this.hardCodedEmailForDemo === this.email &&
-				this.hardCodedPasswordForDemo === this.password
+				this.hardCodedPasswordForDemo === this.password &&
+				this.hardCodedEmailForDemo === this.email
 			) {
 				this.alertType = "success"
 				this.errorMsg = "Welcome Back Master Wizard!"

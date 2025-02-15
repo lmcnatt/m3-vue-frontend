@@ -38,7 +38,7 @@ export default {
 				<RouterLink to="/">Home</RouterLink>
 				<RouterLink to="/about">About</RouterLink>
 			</div>
-			<button @click="logout()">Logout</button>
+			<v-btn @click="logout()">Logout</v-btn>
 		</header>
 
 		<RouterView />
