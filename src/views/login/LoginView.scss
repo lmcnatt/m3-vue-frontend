@@ -1,1 +1,37 @@
 @use "@/assets/styles/ui.scss";
+
+.logo-area {
+	color: ui.$colors-ui-white;
+}
+
+.login-page-content {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+}
+
+.login-box {
+	width: 100vw;
+	height: 100vh;
+	border: 1px ui.$colors-border solid;
+	border-radius: 16px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	background-color: ui.$colors-ui-blue;
+	box-shadow: 4px 8px #656565;
+	row-gap: ui.$spacing-medium-large;
+
+	& div,
+	p {
+		color: ui.$colors-ui-white;
+	}
+
+	padding: ui.$spacing-medium-large;
+
+	& .input-container {
+		padding: 16px;
+	}
+}
