@@ -16,11 +16,11 @@ export default {
 			],
 			passwordRules: [
 				(value) => !!value || "Required.",
-				(value) => (value && value.length >= 8) || "Min 8 characters"
+				(value) => (value && value.length >= 10) || "Min 10 characters"
 			],
 			isFormValid: false,
 			hardCodedEmailForDemo: "wizards@gmail.com",
-			hardCodedPasswordForDemo: "15bagels"
+			hardCodedPasswordForDemo: "1738bagels"
 		}
 	},
 	methods: {
