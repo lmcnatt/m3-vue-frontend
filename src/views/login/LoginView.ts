@@ -8,19 +8,57 @@ export default {
 			errorMsg: "",
 			password: "",
 			email: "",
-			dialog: false,
+			forgotEmail: "",
+			passwordResetDialog: false,
+			submitForgotPasswordLoading: false,
+			registerDialog: false,
 			isLoading: false,
-			emailRules: [
-				(value) => !!value || "Required.",
-				(value) => (value && value.length >= 3) || "Min 3 characters"
-			],
-			passwordRules: [
-				(value) => !!value || "Required.",
-				(value) => (value && value.length >= 10) || "Min 10 characters"
-			],
-			isFormValid: false,
-			hardCodedEmailForDemo: "wizards@gmail.com",
-			hardCodedPasswordForDemo: "1738bagels"
+			isRegisterFormValid: false,
+			passwordResetFormIsValid: false,
+			registerFormIsLoading: false,
+			forgotEmailRules: {
+				forgotEmail: [
+					(value) => !!value || "Required.",
+					(value) => (value && value.length >= 3) || "Min 3 characters"
+				]
+			},
+			loginRules: {
+				email: [
+					(value) => !!value || "Required.",
+					(value) => (value && value.length >= 3) || "Min 3 characters"
+				],
+				password: [
+					(value) => !!value || "Required.",
+					(value) => (value && value.length >= 8) || "Min 8 characters"
+				]
+			},
+			register: {
+				email: "",
+				name: "",
+				password: "",
+				c_password: ""
+			},
+			registerRules: {
+				email: [
+					(value) => !!value || "Required.",
+					(value) => (value && value.length >= 3) || "Min 3 characters"
+				],
+				name: [
+					(value) => !!value || "Required.",
+					(value) => (value && value.length >= 3) || "Min 3 characters"
+				],
+				password: [
+					(value) => !!value || "Required.",
+					(value) => (value && value.length >= 8) || "Min 8 characters"
+				],
+				c_password: [
+					(value) => !!value || "Type confirm password.",
+					(value) =>
+						value === this.register.password ||
+						"The password confirmation does not match."
+				]
+			},
+			isFormValid: false
 		}
 	},
 	methods: {
@@ -28,29 +66,66 @@ export default {
 			if (!this.isFormValid) {
 				return
 			}
-
-			this.errorMsg = ""
-			if (
-				this.hardCodedPasswordForDemo === this.password &&
-				this.hardCodedEmailForDemo === this.email
-			) {
-				this.alertType = "success"
-				this.errorMsg = "Welcome Back Master Wizard!"
-				this.isLoading = true
-				setTimeout(() => {
-					this.isAuthenticated = true
-					this.$emit("authenticate", this.isAuthenticated)
-				}, 1000)
-			} else if (this.email === this.password) {
-				this.alertType = "warning"
-				this.errorMsg = "Your username and password can't be the same!"
-			} else {
-				this.alertType = "error"
-				this.errorMsg = "Login failed! Try again."
+			const user = {
+				email: this.email,
+				password: this.password
 			}
+			this.errorMsg = ""
+			this.isLoading = true
+			this.$store.dispatch("auth/login", user).then(
+				() => {
+					setTimeout(() => {
+						window.location.reload()
+					}, 2000)
+				},
+				(error) => {
+					this.isLoading = false
+					this.errorMsg =
+						(error.response &&
+							error.response.data &&
+							error.response.data.message) ||
+						error.message ||
+						error.toString()
+				}
+			)
 		},
-		forgotPassword() {
-			console.log("here")
+		submitForgotPassword() {
+			this.submitForgotPasswordLoading = true
+			this.$store.dispatch("auth/forgotPassword", this.forgotEmail).then(
+				() => {
+					alert("Success!")
+					this.submitForgotPasswordLoading = false
+					this.passwordResetDialog = false
+				},
+				(error) => {
+					this.submitForgotPasswordLoading = false
+				}
+			)
+		},
+		submitRegister() {
+			if (!this.isRegisterFormValid) {
+				return
+			}
+
+			const register = {
+				name: this.register.name,
+				email: this.register.email,
+				password: this.register.password,
+				c_password: this.register.c_password
+			}
+
+			this.registerFormIsLoading = true
+			this.$store.dispatch("auth/register").then(
+				() => {
+					alert("Success!")
+					this.registerFormIsLoading = false
+					this.registerDialog = false
+				},
+				(error) => {
+					this.registerFormIsLoading = false
+					alert("Error!")
+				}
+			)
 		}
 	}
 }
