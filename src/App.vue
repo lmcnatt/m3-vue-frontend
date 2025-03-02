@@ -3,7 +3,6 @@ import { RouterLink, RouterView } from "vue-router"
 import LoginView from "./views/login/LoginView.vue"
 import { mapState } from "vuex"
 import { ref } from "vue"
-
 export default {
 	setup() {
 		const theme = ref("dark")
@@ -50,7 +49,10 @@ export default {
 </script>
 <template>
 	<v-app :theme="theme">
-		<v-app-bar :title="authUser.name === undefined ? '' : title">
+		<v-app-bar
+			:title="authUser.name === undefined ? '' : title"
+			v-if="isAuthenticated"
+		>
 			<v-spacer></v-spacer>
 			<v-btn to="/home" default>Home</v-btn>
 			<v-btn to="about">About</v-btn>

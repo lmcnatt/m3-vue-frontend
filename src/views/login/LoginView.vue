@@ -4,7 +4,7 @@
 			<v-col justify="center">
 				<v-sheet class="pa-2 ma-2">
 					<v-card>
-						<template v-slot:title>Login Here</template>
+						<template v-slot:title> Login Here </template>
 
 						<template v-slot:text>
 							<v-form v-model="isFormValid">
@@ -25,7 +25,7 @@
 										:rules="loginRules.password"
 										hide-details="auto"
 										@keyup.enter="submitLogin()"
-									></v-text-field>
+									/>
 
 									<v-alert
 										class="ma-2 pa-2"
@@ -159,6 +159,6 @@
 		</v-dialog>
 	</v-container>
 </template>
-<script src="./LoginView.ts" />
+<script src="./LoginView.ts" type="ts" />
 
-<style src="./LoginView.scss" />
+<style src="./LoginView.scss" type="scss" />
