@@ -54,7 +54,7 @@ export default {
 			v-if="isAuthenticated"
 		>
 			<v-spacer></v-spacer>
-			<v-btn to="/home" default>Home</v-btn>
+			<v-btn to="home" default>Home</v-btn>
 			<v-btn to="about">About</v-btn>
 			<v-btn
 				:prepend-icon="
