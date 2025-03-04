@@ -12,7 +12,6 @@ export const auth = {
 		login({ commit }, user) {
 			return authService.login(user).then(
 				(user) => {
-					console.log(user)
 					commit("loginSuccess", user)
 					return Promise.resolve(user)
 				},
@@ -53,7 +52,6 @@ export const auth = {
 	},
 	mutations: {
 		loginSuccess(state, user) {
-			console.log(user)
 			state.status.loggedIn = true
 			state.user = user
 		},

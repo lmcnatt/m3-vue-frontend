@@ -1,27 +1,72 @@
+// import axios from "axios"
+// import API_URL from "./env"
+// const request = axios.create({
+// 	baseURL: API_URL
+// })
+
+// class AuthService {
+// 	login(user) {
+// 		let formData = new FormData()
+// 		formData.append("email", user.email)
+// 		formData.append("password", user.password)
+// 		return request.post("login", formData).then((response) => {
+// 			const data = response.data
+// 			const user = data.results
+// 			if (user.token) {
+// 				localStorage.setItem("user", JSON.stringify(user))
+// 				request.interceptors.request.use(function (config) {
+// 					config.headers.authorization = user.token
+// 					config.url = API_URL
+// 					return config
+// 				})
+// 			}
+
+// 			return data
+// 		})
+// 	}
+
+// 	logout() {
+// 		localStorage.removeItem("user")
+// 	}
+
+// 	register(user) {
+// 		return request.post("register", {
+// 			name: user.name,
+// 			email: user.email,
+// 			password: user.password,
+// 			c_password: user.c_password
+// 		})
+// 	}
+
+// 	forgotPassword(forgotEmail) {
+// 		console.log("inside service -- ", forgotEmail)
+// 		let formData = new FormData()
+// 		formData.append("email", forgotEmail)
+// 		return request
+// 			.post(API_URL + "forgot_password", formData)
+// 			.then((response) => {
+// 				return response.data
+// 			})
+// 	}
+// }
+
+// const authService = new AuthService()
+// export default authService
+
 import axios from "axios"
 import API_URL from "./env"
-const request = axios.create({
-	baseURL: API_URL
-})
 
 class AuthService {
 	login(user) {
 		let formData = new FormData()
 		formData.append("email", user.email)
 		formData.append("password", user.password)
-		return request.post("login", formData).then((response) => {
-			const data = response.data
-			const user = data.results
-			if (user.token) {
-				localStorage.setItem("user", JSON.stringify(user))
-				request.interceptors.request.use(function (config) {
-					config.headers.authorization = user.token
-					config.url = API_URL
-					return config
-				})
+		return axios.post(API_URL + "login", formData).then((response) => {
+			if (response.data.data.token) {
+				localStorage.setItem("user", JSON.stringify(response.data.data))
 			}
 
-			return data
+			return response.data
 		})
 	}
 
@@ -30,7 +75,7 @@ class AuthService {
 	}
 
 	register(user) {
-		return request.post("register", {
+		return axios.post(API_URL + "register", {
 			name: user.name,
 			email: user.email,
 			password: user.password,
@@ -42,7 +87,7 @@ class AuthService {
 		console.log("inside service -- ", forgotEmail)
 		let formData = new FormData()
 		formData.append("email", forgotEmail)
-		return request
+		return axios
 			.post(API_URL + "forgot_password", formData)
 			.then((response) => {
 				return response.data
