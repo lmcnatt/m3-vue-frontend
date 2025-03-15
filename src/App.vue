@@ -144,10 +144,10 @@ export default {
 			<v-spacer></v-spacer>
 			<v-btn to="home" default>Home</v-btn>
 			<v-btn to="about">About</v-btn>
-			<v-menu min-width="200px" rounded>
+			<v-menu min-width="200px" rounded transition="slide-y-transition">
 				<template v-slot:activator="{ props }">
 					<v-btn icon v-bind="props">
-						<v-avatar color="brown" size="large">
+						<v-avatar size="large">
 							<v-img
 								icon
 								v-bind="props"
@@ -169,6 +169,8 @@ export default {
 						<div class="mx-auto text-center">
 							<h3>{{ profile.name }}</h3>
 							<v-divider class="my-3"></v-divider>
+							<v-btn @click="profileDialog = true">Profile</v-btn>
+							<v-divider class="my-3"></v-divider>
 							<v-btn
 								:prepend-icon="
 									theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'
@@ -176,7 +178,6 @@ export default {
 								@click="changeTheme"
 								>Toggle Theme
 							</v-btn>
-							<v-btn @click="profileDialog = true">Profile</v-btn>
 							<v-divider class="my-3"></v-divider>
 							<v-btn @click="logout()">Logout</v-btn>
 						</div>
@@ -225,6 +226,9 @@ export default {
 						</v-card>
 						<v-card-actions>
 							<v-btn @click="removeAvatar">Remove Profile Picture</v-btn>
+							<v-btn variant="text" @click="profileDialog = false">
+								Close
+							</v-btn>
 						</v-card-actions>
 					</v-card>
 				</v-form>
