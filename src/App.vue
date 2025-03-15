@@ -118,14 +118,19 @@ export default {
 			this.profile.name = this.authUser.name
 
 			this.profile.title = this.title
-			this.$store.dispatch("user/getUser").then((response) => {
-				if (response.avatar) {
-					this.$store.commit("auth/uploadAvatarSuccess", response.avatar)
-				}
-				if (!response.email_verified_at) {
-					this.showEmailNotVerifiedDialog = true
-				}
-			})
+			this.$store
+				.dispatch("user/getUser")
+				.then((response) => {
+					if (response.avatar) {
+						this.$store.commit("auth/uploadAvatarSuccess", response.avatar)
+					}
+					if (!response.email_verified_at) {
+						this.showEmailNotVerifiedDialog = true
+					}
+				})
+				.catch((error) => {
+					this.logout()
+				})
 		}
 	}
 }
