@@ -66,9 +66,11 @@ export default {
 			}
 		})
 	},
-	updated() {
-		if (this.isAuthenticated) {
-			this.$router.push({ name: "home" })
+	watch: {
+		isAuthenticated(newValue) {
+			if (newValue) {
+				this.$router.push({ name: "home" })
+			}
 		}
 	},
 	created() {
@@ -142,8 +144,9 @@ export default {
 			v-if="isAuthenticated"
 		>
 			<v-spacer></v-spacer>
-			<v-btn to="home" default>Home</v-btn>
-			<v-btn to="about">About</v-btn>
+			<v-btn to="/">Home</v-btn>
+			<v-btn to="/about">About</v-btn>
+			<v-btn to="/lessons">Lessons</v-btn>
 			<v-menu min-width="200px" rounded transition="slide-y-transition">
 				<template v-slot:activator="{ props }">
 					<v-btn icon v-bind="props">
