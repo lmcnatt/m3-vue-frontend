@@ -2,15 +2,15 @@ import axios from "axios"
 import API_URL from "./env"
 import authHeader from "./auth-header"
 
-class LessonService {
+class LessonsService {
 	listMyLessons() {
 		return axios
-			.get(API_URL + "lesson", { headers: authHeader() })
+			.get(API_URL + "lessons", { headers: authHeader() })
 			.then((response) => {
 				return response.data.data
 			})
 	}
 }
 
-const lessonService = new LessonService()
-export default lessonService
+const lessonsService = new LessonsService()
+export default lessonsService
