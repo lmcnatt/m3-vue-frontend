@@ -13,7 +13,7 @@ class LessonsService {
 
 	editLesson(lessonData) {
 		return axios
-			.post(API_URL + `lessons/${lessonData.id}/edit`, lessonData, {
+			.put(API_URL + `lessons/${lessonData.id}`, lessonData, {
 				headers: authHeader()
 			})
 			.then((response) => {
