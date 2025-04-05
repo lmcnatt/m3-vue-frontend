@@ -64,27 +64,7 @@ export default {
 		getLessons() {
 			this.$store.dispatch("lessons/getLessons").then(() => {
 				this.isLoadingLessons = false
-
-				// Ensure we have a list of users for the dropdowns
-				if (this.allUsers.length === 0) {
-					this.extractUsersFromLessons()
-				}
 			})
-		},
-		formatDate(dateString: string) {
-			if (!dateString) return ""
-			const date = new Date(dateString)
-			return date.toLocaleDateString("en-US", {
-				// weekday: "short",
-				year: "numeric",
-				month: "short",
-				day: "numeric"
-			})
-		},
-		formatDateForInput(dateString: string) {
-			if (!dateString) return ""
-			const date = new Date(dateString)
-			return date.toISOString().split("T")[0]
 		},
 		openDeleteLessonDialog(lesson) {
 			this.selectedDeleteLesson = lesson
@@ -147,35 +127,81 @@ export default {
 
 		createLesson() {},
 
-		updateLesson() {},
-
-		deleteLesson() {},
-
-		extractUsersFromLessons() {
-			// Extract unique users from the lessons
-			if (this.lessons && this.lessons.length > 0) {
-				const usersMap = new Map()
-
-				this.lessons.forEach((lesson) => {
-					// Add coach
-					if (lesson.coach && !usersMap.has(lesson.coach.id)) {
-						usersMap.set(lesson.coach.id, lesson.coach)
-					}
-
-					// Add student1
-					if (lesson.student1 && !usersMap.has(lesson.student1.id)) {
-						usersMap.set(lesson.student1.id, lesson.student1)
-					}
-
-					// Add student2 if exists
-					if (lesson.student2 && !usersMap.has(lesson.student2.id)) {
-						usersMap.set(lesson.student2.id, lesson.student2)
-					}
+		updateLesson() {
+			this.lessonIsUpdating = true
+			this.editLessonErrorMessage = null
+			this.$store
+				.dispatch("lessons/updateLesson", this.editLesson)
+				.then(() => {
+					this.editLessonDialog = false
+					this.editVideoChangeDialogBtn = false
+					this.editLesson = {}
+					this.lessonIsUpdating = false
 				})
-
-				this.allUsers = Array.from(usersMap.values())
-			}
+				.catch((error) => {
+					this.editLessonErrorMessage = error.response.data.data
+					this.lessonIsUpdating = false
+				})
 		},
+
+		deleteLesson() {
+			this.lessonIsDeleting = true
+			this.deleteLessonErrorMessage = null
+			this.$store
+				.dispatch("lessons/deleteLesson", this.selectedDeleteLesson)
+				.then(() => {
+					this.selectedDeleteLesson = false
+					this.lessonIsDeleting = false
+					this.deleteLessonDialog = false
+				})
+				.catch((error) => {
+					this.deleteLessonErrorMessage = error.response.data.data
+					this.lessonIsDeleting = false
+				})
+		},
+
+		onExistingLessonVideoChange(e) {
+			let video = e.target.files || e.dataTransfer.files
+			if (!video.length) return
+
+			this.editLesson.video = video[0]
+			this.lessonIsUpdating = true
+			this.$store
+				.dispatch("lessons/updateLesson", this.editLesson)
+				.then(() => {
+					this.lessonIsUpdating = false
+				})
+				.catch((error) => {
+					this.editLessonErrorMessage = error.response.data.data
+					this.lessonIsUpdating = false
+				})
+		},
+		onNewLessonVideoChange(event) {
+			this.newLesson.video = null
+
+			if (!event || !event.target || !event.target.files) return // Safety check
+
+			const video = event.target.files || event.dataTransfer.files
+			if (!video.length) return
+
+			this.newLesson.video = video[0]
+		},
+		formatDate(dateString: string) {
+			if (!dateString) return ""
+			const date = new Date(dateString)
+			return date.toLocaleDateString("en-US", {
+				// weekday: "short",
+				year: "numeric",
+				month: "short",
+				day: "numeric"
+			})
+		},
+		formatDateForInput(dateString: string) {
+			if (!dateString) return ""
+			const date = new Date(dateString)
+			return date.toISOString().split("T")[0]
+		},
+
 		onDanceStyleChange(danceStyle) {
 			// Update available dances based on the selected dance style
 			if (danceStyle && this.danceMap[danceStyle]) {
