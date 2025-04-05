@@ -3,27 +3,6 @@ import { useDisplay } from "vuetify"
 
 export default {
 	name: "LessonsView",
-	data() {
-		return {
-			lessonDialog: false,
-			selectedLesson: null,
-			isLoadingLessons: true,
-			editLessonDialog: false,
-			editingLesson: null,
-			isUploadingVideo: false,
-			isSavingLesson: false,
-			allUsers: [],
-			danceStyles: ["Latin", "Ballroom", "Smooth", "Rhythm", "Cabaret"],
-			danceMap: {
-				Latin: ["Cha Cha", "Samba", "Rumba", "Paso Doble", "Jive"],
-				Ballroom: ["Waltz", "Tango", "Viennese Waltz", "Foxtrot", "Quickstep"],
-				Smooth: ["Waltz", "Tango", "Foxtrot", "Viennese Waltz", "Peabody"],
-				Rhythm: ["Cha Cha", "Rumba", "Swing", "Bolero", "Mambo"],
-				Cabaret: ["Cabaret"]
-			},
-			availableDances: []
-		}
-	},
 	computed: {
 		...mapState({
 			lessons() {
@@ -31,12 +10,51 @@ export default {
 			},
 			authUser() {
 				return this.$store.state.auth.user
+			},
+			danceStyles() {
+				return this.$store.state.lessons.danceStyles
+			},
+			dances() {
+				return this.$store.state.lessons.dances
 			}
 		})
 	},
+	data() {
+		return {
+			// Form Data Holders
+			editLesson: {},
+			selectedDeleteLesson: null,
+			newLesson: {
+				title: "",
+				lesson_date: "",
+				notes: "",
+				coach_id: "",
+				student2_id: "",
+				dance_style_id: 1,
+				dance_id: 1,
+				video: ""
+			},
+
+			// Messages
+			editLessonErrorMessage: null,
+			createLessonErrorMessage: null,
+
+			// Dialogs
+			createLessonDialog: false,
+			editLessonDialog: false,
+			deleteLessonDialog: false,
+
+			// Toggle Buttons
+			editVideoChangeDialogBtn: false,
+
+			// Loaders
+			lessonIsCreating: false,
+			lessonIsUpdating: false,
+			lessonIsDeleting: false
+		}
+	},
 	created() {
 		this.getLessons()
-		this.getAllUsers()
 	},
 	methods: {
 		openLessonDialog(lesson) {
@@ -44,7 +62,7 @@ export default {
 			this.lessonDialog = true
 		},
 		getLessons() {
-			this.$store.dispatch("lessons/listMyLessons").then(() => {
+			this.$store.dispatch("lessons/getLessons").then(() => {
 				this.isLoadingLessons = false
 
 				// Ensure we have a list of users for the dropdowns
@@ -68,37 +86,71 @@ export default {
 			const date = new Date(dateString)
 			return date.toISOString().split("T")[0]
 		},
+		openDeleteLessonDialog(lesson) {
+			this.selectedDeleteLesson = lesson
+			this.deleteLessonDialog = true
+		},
 		openEditLessonDialog(lesson) {
-			// Clone the lesson to avoid directly modifying the store data
-			this.editingLesson = JSON.parse(JSON.stringify(lesson))
-
+			this.editLesson = lesson
 			// Format the date for the input field
-			this.editingLesson.lesson_date = this.formatDateForInput(
-				lesson.lesson_date
-			)
+			this.editLesson.lesson_date = this.formatDateForInput(lesson.lesson_date)
 
 			// Set the coach_id and student2_id for the selects
-			this.editingLesson.coach_id = lesson.coach.id
+			this.editLesson.coach_id = lesson.coach.id
 			if (lesson.student2) {
-				this.editingLesson.student2_id = lesson.student2.id
+				this.editLesson.student2_id = lesson.student2.id
 			} else {
-				this.editingLesson.student2_id = null
+				this.editLesson.student2_id = null
 			}
 
 			// Set available dances based on dance style
-			this.onDanceStyleChange(this.editingLesson.dance_style)
+			this.onDanceStyleChange(this.editLesson.dance_style)
 
 			this.editLessonDialog = true
 		},
-		cancelEditLesson() {
+		openCreateLessonDialog() {
+			this.newLesson = {
+				title: "",
+				lesson_date: "",
+				notes: "",
+				coach_id: "",
+				student2_id: "",
+				dance_style_id: 1,
+				dance_id: 1,
+				video: ""
+			}
+
+			this.createLessonDialog = true
+		},
+		closeCreateLessonDialog() {
+			this.newLesson = {
+				title: "",
+				lesson_date: "",
+				notes: "",
+				coach_id: "",
+				student2_id: "",
+				dance_style_id: 1,
+				dance_id: 1,
+				video: ""
+			}
+
+			this.createLessonDialog = false
+		},
+		closeEditLessonDialog() {
 			this.editLessonDialog = false
-			this.editingLesson = null
+			this.editLesson = {}
 		},
-		getAllUsers() {
-			// In a real app, you'd fetch all users from the API
-			// For now, we'll extract users from lessons
-			this.extractUsersFromLessons()
+		closeDeleteLessonDialog() {
+			this.deleteLessonDialog = false
+			this.selectedDeleteLesson = null
 		},
+
+		createLesson() {},
+
+		updateLesson() {},
+
+		deleteLesson() {},
+
 		extractUsersFromLessons() {
 			// Extract unique users from the lessons
 			if (this.lessons && this.lessons.length > 0) {

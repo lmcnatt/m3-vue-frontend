@@ -55,8 +55,9 @@
 			</v-card-title>
 
 			<v-card-subtitle class="text-subtitle-1">
-				{{ selectedLesson.coach.name }} | {{ selectedLesson.dance_style }}
-				{{ selectedLesson.dance }}
+				{{ selectedLesson.coach.name }} |
+				{{ selectedLesson.dance_style?.style }}
+				{{ selectedLesson.dance?.dance }}
 			</v-card-subtitle>
 			<v-divider class="py-1"></v-divider>
 			<v-card-subtitle>
@@ -117,8 +118,10 @@
 					<v-row>
 						<v-col cols="12" md="6">
 							<v-select
-								v-model="editingLesson.dance_style"
+								v-model="editingLesson.dance_style_id"
 								:items="danceStyles"
+								item-title="style"
+								item-value="id"
 								label="Dance Style"
 								required
 								@update:model-value="onDanceStyleChange"
@@ -126,11 +129,13 @@
 						</v-col>
 						<v-col cols="12" md="6">
 							<v-select
-								v-model="editingLesson.dance"
+								v-model="editingLesson.dance_id"
 								:items="availableDances"
+								item-title="dance"
+								item-value="id"
 								label="Dance"
 								required
-								:disabled="!editingLesson.dance_style"
+								:disabled="!editingLesson.dance_style_id"
 							></v-select>
 						</v-col>
 					</v-row>
