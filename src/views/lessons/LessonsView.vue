@@ -195,19 +195,20 @@
 				</v-form>
 			</v-card-text>
 			<v-card-actions>
+				<v-spacer></v-spacer>
 				<v-btn
 					color="error"
-					@click="removeVideo"
-					:disabled="!editingLesson.video || isUploadingVideo"
-					>Remove Video</v-btn
+					:disabled="editLessonErrorMessage"
+					variant="text"
+					@click="editLessonDialog = false"
+					>Close</v-btn
 				>
-				<v-spacer></v-spacer>
-				<v-btn variant="text" @click="cancelEditLesson">Cancel</v-btn>
 				<v-btn
 					color="primary"
-					@click="saveLesson"
-					:loading="isSavingLesson"
-					:disabled="isSavingLesson"
+					variant="text"
+					@click="updateLesson()"
+					:loading="lessonIsUpdating"
+					:disabled="lessonIsUpdating"
 					>Save</v-btn
 				>
 			</v-card-actions>

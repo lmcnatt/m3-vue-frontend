@@ -73,14 +73,6 @@ export const lessons = {
 			state.danceStyles = Array.from(danceStylesMap.values())
 			state.dances = Array.from(dancesMap.values())
 		},
-		updateLesson(state, updatedLesson) {
-			const index = state.lessonsList.findIndex(
-				(lesson) => lesson.id === updatedLesson.id
-			)
-			if (index !== -1) {
-				state.lessonsList.splice(index, 1, updatedLesson)
-			}
-		},
 		addLesson(state, lesson) {
 			state.lessonsList.push(lesson)
 		},

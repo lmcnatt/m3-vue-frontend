@@ -77,11 +77,6 @@ export default {
 
 			// Set the coach_id and student2_id for the selects
 			this.editLesson.coach_id = lesson.coach.id
-			if (lesson.student2) {
-				this.editLesson.student2_id = lesson.student2.id
-			} else {
-				this.editLesson.student2_id = null
-			}
 
 			// Set available dances based on dance style
 			this.onDanceStyleChange(this.editLesson.dance_style)
@@ -116,16 +111,21 @@ export default {
 
 			this.createLessonDialog = false
 		},
-		closeEditLessonDialog() {
-			this.editLessonDialog = false
-			this.editLesson = {}
-		},
-		closeDeleteLessonDialog() {
-			this.deleteLessonDialog = false
-			this.selectedDeleteLesson = null
-		},
 
-		createLesson() {},
+		createLesson() {
+			this.lessonIsCreating = true
+			this.createLessonErrorMessage = null
+			this.$store
+				.dispatch("lessons/createLesson", this.newLesson)
+				.then(() => {
+					this.closeCreateLessonDialog()
+					this.lessonIsCreating = false
+				})
+				.catch((error) => {
+					this.createLessonErrorMessage = error.response.data.data
+					this.lessonIsCreating = false
+				})
+		},
 
 		updateLesson() {
 			this.lessonIsUpdating = true
@@ -176,6 +176,7 @@ export default {
 					this.lessonIsUpdating = false
 				})
 		},
+
 		onNewLessonVideoChange(event) {
 			this.newLesson.video = null
 
@@ -186,6 +187,7 @@ export default {
 
 			this.newLesson.video = video[0]
 		},
+
 		formatDate(dateString: string) {
 			if (!dateString) return ""
 			const date = new Date(dateString)
@@ -220,86 +222,6 @@ export default {
 					this.editingLesson.dance = null
 				}
 			}
-		},
-		onVideoChange(e) {
-			const video = e.target.files || e.dataTransfer.files
-			if (!video.length) return
-
-			this.isUploadingVideo = true
-
-			// Create a FormData object to send the video
-			const formData = new FormData()
-			formData.append("video", video[0])
-			formData.append("lesson_id", this.editingLesson.id)
-
-			// Call the API to upload the video
-			this.$store
-				.dispatch("lessons/uploadLessonVideo", formData)
-				.then((response) => {
-					// Update the editingLesson with the new video URL
-					this.editingLesson.video = response.video
-					this.isUploadingVideo = false
-				})
-				.catch((error) => {
-					console.error("Error uploading video:", error)
-					alert("Error uploading video. Please try again.")
-					this.isUploadingVideo = false
-				})
-		},
-		removeVideo() {
-			if (!this.editingLesson.video) return
-
-			this.isUploadingVideo = true
-
-			// Call the API to delete the video
-			this.$store
-				.dispatch("lessons/deleteLessonVideo", this.editingLesson.id)
-				.then(() => {
-					// Update the editingLesson
-					this.editingLesson.video = null
-					this.isUploadingVideo = false
-				})
-				.catch((error) => {
-					console.error("Error removing video:", error)
-					alert("Error removing video. Please try again.")
-					this.isUploadingVideo = false
-				})
-		},
-		saveLesson() {
-			this.isSavingLesson = true
-
-			// Prepare the data for the API
-			const lessonData = {
-				id: this.editingLesson.id,
-				title: this.editingLesson.title,
-				dance_style: this.editingLesson.dance_style,
-				dance: this.editingLesson.dance,
-				lesson_date: this.editingLesson.lesson_date,
-				notes: this.editingLesson.notes,
-				coach_id: this.editingLesson.coach_id,
-				student2_id: this.editingLesson.student2_id
-			}
-
-			// Call the API to save the lesson
-			this.$store
-				.dispatch("lessons/editLesson", lessonData)
-				.then((response) => {
-					// Update the selected lesson with the updated data
-					this.selectedLesson = response
-
-					// Refresh the lesson list
-					this.getLessons()
-
-					// Close the edit dialog
-					this.editLessonDialog = false
-					this.editingLesson = null
-					this.isSavingLesson = false
-				})
-				.catch((error) => {
-					console.error("Error saving lesson:", error)
-					alert("Error saving lesson. Please try again.")
-					this.isSavingLesson = false
-				})
 		}
 	}
 }

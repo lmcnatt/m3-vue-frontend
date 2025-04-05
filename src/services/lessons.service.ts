@@ -51,26 +51,15 @@ class LessonsService {
 				return response.data.results
 			})
 	}
-	uploadLessonVideo(formData) {
+	uploadLessonVideo(lesson) {
+		let formData = new FormData()
+		formData.append("video", lesson.video)
 		return axios
-			.post(API_URL + "lessons/video/upload", formData, {
-				headers: {
-					...authHeader(),
-					"Content-Type": "multipart/form-data"
-				}
+			.post(API_URL + `lessons/${lesson.id}/update_lesson_video`, formData, {
+				headers: authHeader("multipart")
 			})
 			.then((response) => {
-				return response.data.data
-			})
-	}
-
-	deleteLessonVideo(lessonId) {
-		return axios
-			.delete(API_URL + `lessons/${lessonId}/video`, {
-				headers: authHeader()
-			})
-			.then((response) => {
-				return response.data.data
+				return response.data.results
 			})
 	}
 }
