@@ -2,9 +2,9 @@
 
 .lesson-video {
 	width: 100%;
-	max-width: 100%;
-	height: auto;
+	max-height: 300px;
 	object-fit: contain;
+	background-color: rgba(0, 0, 0, 0.05);
 	border-radius: 4px;
 	display: block;
 	margin: 0 auto;
@@ -12,6 +12,16 @@
 
 .video-container {
 	width: 100%;
-	padding: 0 16px;
-	box-sizing: border-box;
+	margin: 1rem 0;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+// Styling for edit form
+.v-form {
+	margin-top: 1rem;
+}
+
+.v-card-actions {
+	padding: 16px;
 }

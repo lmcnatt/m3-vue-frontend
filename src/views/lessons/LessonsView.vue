@@ -66,14 +66,14 @@
 			<v-card-text>
 				{{ selectedLesson.notes }}
 			</v-card-text>
-			<!-- <div v-if="selectedLesson.video" class="video-container">
+			<div v-if="selectedLesson.video" class="video-container">
 				<video
 					controls
 					class="lesson-video"
 					:src="selectedLesson.video"
 					alt="`${selectedLesson.title} Lesson Video`"
 				></video>
-			</div> -->
+			</div>
 
 			<v-card-actions>
 				<v-btn
@@ -87,6 +87,124 @@
 				<v-btn color="primary" @click="lessonDialog = false" border>
 					Close
 				</v-btn>
+			</v-card-actions>
+		</v-card>
+	</v-dialog>
+
+	<!-- Edit Lesson Dialog -->
+	<v-dialog v-model="editLessonDialog" max-width="700px">
+		<v-card v-if="editingLesson">
+			<v-card-title>Edit Lesson</v-card-title>
+			<v-card-text>
+				<v-form ref="editLessonForm">
+					<v-row>
+						<v-col cols="12" md="6">
+							<v-text-field
+								v-model="editingLesson.title"
+								label="Title"
+								required
+							></v-text-field>
+						</v-col>
+						<v-col cols="12" md="6">
+							<v-text-field
+								v-model="editingLesson.lesson_date"
+								label="Lesson Date"
+								type="date"
+								required
+							></v-text-field>
+						</v-col>
+					</v-row>
+					<v-row>
+						<v-col cols="12" md="6">
+							<v-select
+								v-model="editingLesson.dance_style"
+								:items="danceStyles"
+								label="Dance Style"
+								required
+								@update:model-value="onDanceStyleChange"
+							></v-select>
+						</v-col>
+						<v-col cols="12" md="6">
+							<v-select
+								v-model="editingLesson.dance"
+								:items="availableDances"
+								label="Dance"
+								required
+								:disabled="!editingLesson.dance_style"
+							></v-select>
+						</v-col>
+					</v-row>
+					<v-row>
+						<v-col cols="12" md="6">
+							<v-autocomplete
+								v-model="editingLesson.coach_id"
+								:items="allUsers"
+								item-title="name"
+								item-value="id"
+								label="Coach"
+								required
+							></v-autocomplete>
+						</v-col>
+						<v-col cols="12" md="6">
+							<v-autocomplete
+								v-model="editingLesson.student2_id"
+								:items="allUsers"
+								item-title="name"
+								item-value="id"
+								label="Partner (optional)"
+								clearable
+							></v-autocomplete>
+						</v-col>
+					</v-row>
+					<v-row>
+						<v-col cols="12">
+							<v-textarea
+								v-model="editingLesson.notes"
+								label="Notes"
+								auto-grow
+								rows="3"
+							></v-textarea>
+						</v-col>
+					</v-row>
+					<v-row>
+						<v-col cols="12">
+							<v-card class="mx-auto" min-width="300" rounded="0">
+								<div v-if="editingLesson.video" class="video-container mb-3">
+									<video
+										controls
+										class="lesson-video"
+										:src="editingLesson.video"
+										alt="Lesson Video"
+									></video>
+								</div>
+								<v-file-input
+									accept="video/*"
+									:loading="isUploadingVideo"
+									:disabled="isUploadingVideo"
+									@change="onVideoChange"
+									label="Change Lesson Video"
+								></v-file-input>
+							</v-card>
+						</v-col>
+					</v-row>
+				</v-form>
+			</v-card-text>
+			<v-card-actions>
+				<v-btn
+					color="error"
+					@click="removeVideo"
+					:disabled="!editingLesson.video || isUploadingVideo"
+					>Remove Video</v-btn
+				>
+				<v-spacer></v-spacer>
+				<v-btn variant="text" @click="cancelEditLesson">Cancel</v-btn>
+				<v-btn
+					color="primary"
+					@click="saveLesson"
+					:loading="isSavingLesson"
+					:disabled="isSavingLesson"
+					>Save</v-btn
+				>
 			</v-card-actions>
 		</v-card>
 	</v-dialog>
