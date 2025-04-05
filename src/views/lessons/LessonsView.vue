@@ -1,5 +1,19 @@
 <template>
-	<h1>Lessons</h1>
+	<v-row>
+		<v-col class="d-flex justify-start">
+			<h1>Lessons</h1>
+		</v-col>
+		<v-col class="d-flex justify-end">
+			<v-btn
+				color="primary"
+				@click="openCreateLessonDialog"
+				prepend-icon="mdi-plus"
+			>
+				New Lesson
+			</v-btn>
+		</v-col>
+	</v-row>
+
 	<v-divider></v-divider>
 	<v-spacer class="py-1"></v-spacer>
 
@@ -15,7 +29,8 @@
 			xl="3"
 			xxl="2"
 		>
-			<v-card class="flex-grow-1" @click="openLessonDialog(lesson)">
+			<!-- @click="openLessonDialog(lesson)" -->
+			<v-card class="flex-grow-1">
 				<v-card-item>
 					<v-card-title>
 						<v-row no-gutters>
@@ -41,7 +56,7 @@
 		</v-col>
 	</v-row>
 
-	<v-dialog v-model="lessonDialog" max-width="600px">
+	<!-- <v-dialog v-model="lessonDialog" max-width="600px">
 		<v-card v-if="selectedLesson">
 			<v-card-title>
 				<v-row no-gutters>
@@ -90,130 +105,7 @@
 				</v-btn>
 			</v-card-actions>
 		</v-card>
-	</v-dialog>
-
-	<!-- Edit Lesson Dialog -->
-	<v-dialog v-model="editLessonDialog" max-width="700px">
-		<v-card v-if="editingLesson">
-			<v-card-title>Edit Lesson</v-card-title>
-			<v-card-text>
-				<v-form ref="editLessonForm">
-					<v-row>
-						<v-col cols="12" md="6">
-							<v-text-field
-								v-model="editingLesson.title"
-								label="Title"
-								required
-							></v-text-field>
-						</v-col>
-						<v-col cols="12" md="6">
-							<v-text-field
-								v-model="editingLesson.lesson_date"
-								label="Lesson Date"
-								type="date"
-								required
-							></v-text-field>
-						</v-col>
-					</v-row>
-					<v-row>
-						<v-col cols="12" md="6">
-							<v-select
-								v-model="editingLesson.dance_style_id"
-								:items="danceStyles"
-								item-title="style"
-								item-value="id"
-								label="Dance Style"
-								required
-								@update:model-value="onDanceStyleChange"
-							></v-select>
-						</v-col>
-						<v-col cols="12" md="6">
-							<v-select
-								v-model="editingLesson.dance_id"
-								:items="availableDances"
-								item-title="dance"
-								item-value="id"
-								label="Dance"
-								required
-								:disabled="!editingLesson.dance_style_id"
-							></v-select>
-						</v-col>
-					</v-row>
-					<v-row>
-						<v-col cols="12" md="6">
-							<v-autocomplete
-								v-model="editingLesson.coach_id"
-								:items="allUsers"
-								item-title="name"
-								item-value="id"
-								label="Coach"
-								required
-							></v-autocomplete>
-						</v-col>
-						<v-col cols="12" md="6">
-							<v-autocomplete
-								v-model="editingLesson.student2_id"
-								:items="allUsers"
-								item-title="name"
-								item-value="id"
-								label="Partner (optional)"
-								clearable
-							></v-autocomplete>
-						</v-col>
-					</v-row>
-					<v-row>
-						<v-col cols="12">
-							<v-textarea
-								v-model="editingLesson.notes"
-								label="Notes"
-								auto-grow
-								rows="3"
-							></v-textarea>
-						</v-col>
-					</v-row>
-					<v-row>
-						<v-col cols="12">
-							<v-card class="mx-auto" min-width="300" rounded="0">
-								<div v-if="editingLesson.video" class="video-container mb-3">
-									<video
-										controls
-										class="lesson-video"
-										:src="editingLesson.video"
-										alt="Lesson Video"
-									></video>
-								</div>
-								<v-file-input
-									accept="video/*"
-									:loading="isUploadingVideo"
-									:disabled="isUploadingVideo"
-									@change="onVideoChange"
-									label="Change Lesson Video"
-								></v-file-input>
-							</v-card>
-						</v-col>
-					</v-row>
-				</v-form>
-			</v-card-text>
-			<v-card-actions>
-				<v-spacer></v-spacer>
-				<v-btn
-					color="error"
-					:disabled="editLessonErrorMessage"
-					variant="text"
-					@click="editLessonDialog = false"
-					>Close</v-btn
-				>
-				<v-btn
-					color="primary"
-					variant="text"
-					@click="updateLesson()"
-					:loading="lessonIsUpdating"
-					:disabled="lessonIsUpdating"
-					>Save</v-btn
-				>
-			</v-card-actions>
-		</v-card>
-	</v-dialog>
+	</v-dialog> -->
 </template>
 <script src="./LessonsView.ts"></script>
 <style src="./LessonsView.scss"></style>
