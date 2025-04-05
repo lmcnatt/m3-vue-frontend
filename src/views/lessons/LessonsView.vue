@@ -1,19 +1,5 @@
 <template>
-	<v-row>
-		<v-col class="d-flex justify-start">
-			<h1>Lessons</h1>
-		</v-col>
-		<v-col class="d-flex justify-end">
-			<v-btn
-				color="primary"
-				@click="openCreateLessonDialog"
-				prepend-icon="mdi-plus"
-			>
-				New Lesson
-			</v-btn>
-		</v-col>
-	</v-row>
-
+	<h1>Lessons</h1>
 	<v-divider></v-divider>
 	<v-spacer class="py-1"></v-spacer>
 
@@ -29,8 +15,7 @@
 			xl="3"
 			xxl="2"
 		>
-			<!-- @click="openLessonDialog(lesson)" -->
-			<v-card class="flex-grow-1">
+			<v-card class="flex-grow-1" @click="openLessonDialog(lesson)">
 				<v-card-item>
 					<v-card-title>
 						<v-row no-gutters>
@@ -56,7 +41,7 @@
 		</v-col>
 	</v-row>
 
-	<!-- <v-dialog v-model="lessonDialog" max-width="600px">
+	<v-dialog v-model="lessonDialog" max-width="600px">
 		<v-card v-if="selectedLesson">
 			<v-card-title>
 				<v-row no-gutters>
@@ -70,9 +55,7 @@
 			</v-card-title>
 
 			<v-card-subtitle class="text-subtitle-1">
-				{{ selectedLesson.coach.name }} |
-				{{ selectedLesson.dance_style?.style }}
-				{{ selectedLesson.dance?.dance }}
+				{{ selectedLesson.coach.name }} | {{ selectedLesson.dance.dance }}
 			</v-card-subtitle>
 			<v-divider class="py-1"></v-divider>
 			<v-card-subtitle>
@@ -82,14 +65,14 @@
 			<v-card-text>
 				{{ selectedLesson.notes }}
 			</v-card-text>
-			<div v-if="selectedLesson.video" class="video-container">
+			<!-- <div v-if="selectedLesson.video" class="video-container">
 				<video
 					controls
 					class="lesson-video"
 					:src="selectedLesson.video"
 					alt="`${selectedLesson.title} Lesson Video`"
 				></video>
-			</div>
+			</div> -->
 
 			<v-card-actions>
 				<v-btn
@@ -105,7 +88,7 @@
 				</v-btn>
 			</v-card-actions>
 		</v-card>
-	</v-dialog> -->
+	</v-dialog>
 </template>
 <script src="./LessonsView.ts"></script>
 <style src="./LessonsView.scss"></style>
