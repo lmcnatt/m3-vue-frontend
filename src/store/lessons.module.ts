@@ -1,4 +1,5 @@
 import lessonsService from "../services/lessons.service"
+import danceService from "../services/dance.service"
 
 const initialState = { lessonsList: [], dances: [] }
 
@@ -10,6 +11,12 @@ export const lessons = {
 			return lessonsService.getLessons().then((lessons) => {
 				commit("setLessons", lessons)
 				return Promise.resolve(lessons)
+			})
+		},
+		getDances({ commit }) {
+			return danceService.getDances().then((dances) => {
+				commit("setDances", dances)
+				return Promise.resolve(dances)
 			})
 		},
 		createLesson({ commit }, lesson) {
@@ -49,20 +56,23 @@ export const lessons = {
 	mutations: {
 		setLessons(state, lessons) {
 			state.lessonsList = lessons
-			state.dances = []
+			if (state.dances.length === 0) {
+				const dancesMap = new Map()
 
-			const dancesMap = new Map()
-
-			for (const lesson of lessons) {
-				if (lesson.dance && !dancesMap.has(lesson.dance_id)) {
-					dancesMap.set(lesson.dance_id, {
-						id: lesson.dance_id,
-						dance: lesson.dance.dance
-					})
+				for (const lesson of lessons) {
+					if (lesson.dance && !dancesMap.has(lesson.dance_id)) {
+						dancesMap.set(lesson.dance_id, {
+							id: lesson.dance_id,
+							dance: lesson.dance.dance
+						})
+					}
 				}
-			}
 
-			state.dances = Array.from(dancesMap.values())
+				state.dances = Array.from(dancesMap.values())
+			}
+		},
+		setDances(state, dances) {
+			state.dances = dances
 		},
 		addLesson(state, lesson) {
 			state.lessonsList.push(lesson)

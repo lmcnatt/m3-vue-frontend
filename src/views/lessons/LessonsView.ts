@@ -13,6 +13,9 @@ export default {
 			},
 			dances() {
 				return this.$store.state.lessons.dances
+			},
+			users() {
+				return this.$store.state.user.users
 			}
 		})
 	},
@@ -35,6 +38,7 @@ export default {
 			// Messages
 			editLessonErrorMessage: null,
 			createLessonErrorMessage: null,
+			deleteLessonErrorMessage: null,
 
 			// Dialogs
 			lessonDialog: false,
@@ -49,11 +53,14 @@ export default {
 			lessonIsCreating: false,
 			lessonIsUpdating: false,
 			lessonIsDeleting: false,
-			lessonIsLoading: false
+			danceIsLoading: true,
+			usersIsLoading: true
 		}
 	},
 	created() {
 		this.getLessons()
+		this.getDances()
+		this.getUsers()
 	},
 	methods: {
 		openLessonDialog(lesson) {
@@ -61,8 +68,21 @@ export default {
 			this.lessonDialog = true
 		},
 		getLessons() {
+			this.danceIsLoading = true
 			this.$store.dispatch("lessons/getLessons").then(() => {
-				this.isLoadingLessons = false
+				this.danceIsLoading = false
+			})
+		},
+		getDances() {
+			this.danceIsLoading = true
+			this.$store.dispatch("lessons/getDances").then(() => {
+				this.danceIsLoading = false
+			})
+		},
+		getUsers() {
+			this.usersIsLoading = true
+			this.$store.dispatch("user/getAllUsers").then(() => {
+				this.usersIsLoading = false
 			})
 		},
 		openDeleteLessonDialog(lesson) {
@@ -74,8 +94,15 @@ export default {
 			// Format the date for the input field
 			this.editLesson.lesson_date = this.formatDateForInput(lesson.lesson_date)
 
-			// Set the coach_id and student2_id for the selects
-			this.editLesson.coach_id = lesson.coach.id
+			// Set the coach_id from the coach object
+			if (lesson.coach && lesson.coach.id) {
+				this.editLesson.coach_id = lesson.coach.id
+			}
+
+			// Set the student2_id from the student2 object if it exists
+			if (lesson.student2 && lesson.student2.id) {
+				this.editLesson.student2_id = lesson.student2.id
+			}
 
 			this.editLessonDialog = true
 		},
@@ -141,15 +168,20 @@ export default {
 		deleteLesson() {
 			this.lessonIsDeleting = true
 			this.deleteLessonErrorMessage = null
+
+			// Get the lesson ID for deletion
+			const lessonId = this.selectedDeleteLesson.id
+
 			this.$store
-				.dispatch("lessons/deleteLesson", this.selectedDeleteLesson)
+				.dispatch("lessons/deleteLesson", lessonId)
 				.then(() => {
 					this.selectedDeleteLesson = false
 					this.lessonIsDeleting = false
 					this.deleteLessonDialog = false
 				})
 				.catch((error) => {
-					this.deleteLessonErrorMessage = error.response.data.data
+					this.deleteLessonErrorMessage =
+						error.response?.data?.data || "Error deleting lesson"
 					this.lessonIsDeleting = false
 				})
 		},

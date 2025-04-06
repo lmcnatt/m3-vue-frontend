@@ -1,7 +1,8 @@
 import userService from "../services/user.service"
 
 const initialState = {
-	user: { avatar: "", email: "", email_verified_at: "", name: "" }
+	user: { avatar: "", email: "", email_verified_at: "", name: "" },
+	users: []
 }
 
 export const user = {
@@ -13,6 +14,17 @@ export const user = {
 				(user) => {
 					commit("setUser", user)
 					return Promise.resolve(user)
+				},
+				(response) => {
+					return Promise.resolve(response)
+				}
+			)
+		},
+		getAllUsers({ commit }) {
+			return userService.getAllUsers().then(
+				(users) => {
+					commit("setAllUsers", users)
+					return Promise.resolve(users)
 				},
 				(response) => {
 					return Promise.resolve(response)
@@ -49,6 +61,9 @@ export const user = {
 		setUser(state, user) {
 			state.user = user
 		},
+		setAllUsers(state, users) {
+			state.users = users
+		},
 		setEmail(state, user) {
 			state.user.email = user.email
 		}
@@ -56,6 +71,9 @@ export const user = {
 	getters: {
 		getUser: (state) => {
 			return state.user
+		},
+		getAllUsers: (state) => {
+			return state.users
 		}
 	}
 }

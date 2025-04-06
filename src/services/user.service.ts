@@ -9,6 +9,13 @@ class UserService {
 				return response.data.data
 			})
 	}
+	getAllUsers() {
+		return axios
+			.get(API_URL + "users", { headers: authHeader() })
+			.then((response) => {
+				return response.data.data
+			})
+	}
 	uploadAvatar(image) {
 		let formData = new FormData()
 		formData.append("image", image)
