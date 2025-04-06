@@ -95,14 +95,14 @@ export default {
 			this.editLesson.lesson_date = this.formatDateForInput(lesson.lesson_date)
 
 			// Set the coach_id from the coach object
-			if (lesson.coach && lesson.coach.id) {
-				this.editLesson.coach_id = lesson.coach.id
-			}
+			// if (lesson.coach && lesson.coach.id) {
+			// 	this.editLesson.coach_id = lesson.coach.id
+			// }
 
 			// Set the student2_id from the student2 object if it exists
-			if (lesson.student2 && lesson.student2.id) {
-				this.editLesson.student2_id = lesson.student2.id
-			}
+			// if (lesson.student2 && lesson.student2.id) {
+			// 	this.editLesson.student2_id = lesson.student2.id
+			// }
 
 			this.editLessonDialog = true
 		},
@@ -132,7 +132,11 @@ export default {
 
 			this.createLessonDialog = false
 		},
-
+		closeEditLessonDialog() {
+			this.editLesson = {}
+			this.editLessonDialog = false
+			this.editVideoChangeDialogBtn = false
+		},
 		createLesson() {
 			this.lessonIsCreating = true
 			this.createLessonErrorMessage = null
@@ -143,12 +147,10 @@ export default {
 					this.lessonIsCreating = false
 				})
 				.catch((error) => {
-					this.createLessonErrorMessage =
-						error.response?.data?.message || "Error creating lesson"
+					this.createLessonErrorMessage = error.response.data.response
 					this.lessonIsCreating = false
 				})
 		},
-
 		updateLesson() {
 			this.lessonIsUpdating = true
 			this.editLessonErrorMessage = null
@@ -161,33 +163,25 @@ export default {
 					this.lessonIsUpdating = false
 				})
 				.catch((error) => {
-					this.editLessonErrorMessage =
-						error.response?.data?.message || "Error updating lesson"
+					this.editLessonErrorMessage = error.response.data.response
 					this.lessonIsUpdating = false
 				})
 		},
-
 		deleteLesson() {
 			this.lessonIsDeleting = true
 			this.deleteLessonErrorMessage = null
-
-			// Get the lesson ID for deletion
-			const lessonId = this.selectedDeleteLesson.id
-
 			this.$store
-				.dispatch("lessons/deleteLesson", lessonId)
+				.dispatch("lessons/deleteLesson", this.selectedDeleteLesson.id)
 				.then(() => {
 					this.selectedDeleteLesson = false
 					this.lessonIsDeleting = false
 					this.deleteLessonDialog = false
 				})
 				.catch((error) => {
-					this.deleteLessonErrorMessage =
-						error.response?.data?.message || "Error deleting lesson"
+					this.deleteLessonErrorMessage = error.response.data.response
 					this.lessonIsDeleting = false
 				})
 		},
-
 		onExistingLessonVideoChange(e) {
 			let video = e.target.files || e.dataTransfer.files
 			if (!video.length) return
@@ -198,13 +192,13 @@ export default {
 				.dispatch("lessons/updateLesson", this.editLesson)
 				.then(() => {
 					this.lessonIsUpdating = false
+					this.editLessonDialog = false
 				})
 				.catch((error) => {
-					this.editLessonErrorMessage = error.response.data.data
+					this.editLessonErrorMessage = error.response.data.response
 					this.lessonIsUpdating = false
 				})
 		},
-
 		onNewLessonVideoChange(event) {
 			this.newLesson.video = null
 
@@ -215,7 +209,6 @@ export default {
 
 			this.newLesson.video = video[0]
 		},
-
 		formatDate(dateString: string) {
 			if (!dateString) return ""
 			const date = new Date(dateString)

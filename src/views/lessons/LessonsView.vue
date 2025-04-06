@@ -110,7 +110,7 @@
 		</v-card>
 	</v-dialog>
 
-	<v-dialog v-model="createLessonDialog" max-width="600px">
+	<v-dialog v-model="createLessonDialog" max-width="1024px">
 		<v-card>
 			<v-card-title>Create Lesson</v-card-title>
 			<v-card-text>
@@ -130,7 +130,6 @@
 								:items="dances"
 								item-title="dance"
 								item-value="id"
-								:loading="danceIsLoading"
 								required
 							></v-select>
 						</v-col>
@@ -181,24 +180,25 @@
 					</v-row>
 				</v-form>
 
-				<v-alert v-if="newLessonErrorMessage" type="error">
-					{{ newLessonErrorMessage }}
+				<v-alert v-if="createLessonErrorMessage" type="error">
+					{{ createLessonErrorMessage }}
 				</v-alert>
 			</v-card-text>
 			<v-card-actions>
 				<v-spacer></v-spacer>
 				<v-btn
 					color="primary"
-					:disabled="newLessonErrorMessage"
 					variant="text"
-					@click="createLesson"
+					@click="createLesson()"
+					:disabled="lessonIsCreating"
+					:loading="lessonIsCreating"
 					border
 				>
 					Create
 				</v-btn>
 				<v-btn
 					color="error"
-					:disabled="newLessonErrorMessage"
+					:disabled="createLessonErrorMessage"
 					variant="text"
 					@click="closeCreateLessonDialog()"
 					border
@@ -209,7 +209,7 @@
 		</v-card>
 	</v-dialog>
 
-	<v-dialog v-model="editLessonDialog" max-width="600px">
+	<v-dialog v-model="editLessonDialog" max-width="1024px">
 		<v-card>
 			<v-card-title>Edit Lesson</v-card-title>
 			<v-card-text>
@@ -281,10 +281,10 @@
 				<v-spacer></v-spacer>
 				<v-btn
 					color="primary"
+					variant="text"
+					@click="updateLesson()"
 					:disabled="lessonIsUpdating"
 					:loading="lessonIsUpdating"
-					variant="text"
-					@click="updateLesson"
 					border
 				>
 					Update
@@ -319,7 +319,7 @@
 					:disabled="lessonIsDeleting"
 					:loading="lessonIsDeleting"
 					variant="text"
-					@click="deleteLesson"
+					@click="deleteLesson()"
 					border
 				>
 					Delete

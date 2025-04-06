@@ -36,8 +36,11 @@ export const lessons = {
 		},
 		deleteLesson({ commit, getters }, lessonId) {
 			return lessonsService.deleteLesson(lessonId).then((response) => {
-				commit("removeLesson", lessonId)
-				return Promise.resolve(response)
+				response.index = getters.getLessonStateIndexByLessonId(
+					response.lesson.id
+				)
+				commit("removeLesson", response.lesson)
+				return Promise.resolve(response.lesson)
 			})
 		},
 		uploadLessonVideo({ commit, getters }, lesson) {
