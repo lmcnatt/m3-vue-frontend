@@ -57,7 +57,7 @@ export const lessons = {
 				if (lesson.dance && !dancesMap.has(lesson.dance_id)) {
 					dancesMap.set(lesson.dance_id, {
 						id: lesson.dance_id,
-						name: lesson.dance.dance
+						dance: lesson.dance.dance
 					})
 				}
 			}
