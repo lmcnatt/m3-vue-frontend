@@ -1,5 +1,6 @@
-export default function authHeader(type = null) {
-	let user = JSON.parse(localStorage.getItem("user"))
+export default function authHeader(type: "multipart" | null = null) {
+	const userStr = localStorage.getItem("user")
+	let user = userStr ? JSON.parse(userStr) : null
 
 	if (user && user.token) {
 		if (type === "multipart") {

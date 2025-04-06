@@ -78,14 +78,14 @@
 			<v-card-text>
 				{{ selectedLesson.notes }}
 			</v-card-text>
-			<!-- <div v-if="selectedLesson.video" class="video-container">
+			<div v-if="selectedLesson.video" class="video-container">
 				<video
 					controls
 					class="lesson-video"
 					:src="selectedLesson.video"
 					alt="`${selectedLesson.title} Lesson Video`"
 				></video>
-			</div> -->
+			</div>
 
 			<v-card-actions>
 				<v-btn

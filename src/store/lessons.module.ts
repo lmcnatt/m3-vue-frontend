@@ -36,9 +36,6 @@ export const lessons = {
 		},
 		deleteLesson({ commit, getters }, lessonId) {
 			return lessonsService.deleteLesson(lessonId).then((response) => {
-				response.index = getters.getLessonStateIndexByLessonId(
-					response.lesson.id
-				)
 				commit("removeLesson", lessonId)
 				return Promise.resolve(response)
 			})
@@ -80,8 +77,13 @@ export const lessons = {
 		setLesson(state, lesson) {
 			state.lessonsList[lesson.index] = lesson
 		},
-		removeLesson(state, lesson) {
-			state.lessonsList.splice(lesson.index + 1, 1)
+		removeLesson(state, lessonId) {
+			const index = state.lessonsList.findIndex(
+				(lesson) => lesson.id === lessonId
+			)
+			if (index !== -1) {
+				state.lessonsList.splice(index, 1)
+			}
 		},
 		updateLessonVideo(state, lesson) {
 			state.lessonsList[lesson.index].video = lesson.video

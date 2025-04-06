@@ -143,7 +143,8 @@ export default {
 					this.lessonIsCreating = false
 				})
 				.catch((error) => {
-					this.createLessonErrorMessage = error.response.data.data
+					this.createLessonErrorMessage =
+						error.response?.data?.message || "Error creating lesson"
 					this.lessonIsCreating = false
 				})
 		},
@@ -160,7 +161,8 @@ export default {
 					this.lessonIsUpdating = false
 				})
 				.catch((error) => {
-					this.editLessonErrorMessage = error.response.data.data
+					this.editLessonErrorMessage =
+						error.response?.data?.message || "Error updating lesson"
 					this.lessonIsUpdating = false
 				})
 		},
@@ -181,7 +183,7 @@ export default {
 				})
 				.catch((error) => {
 					this.deleteLessonErrorMessage =
-						error.response?.data?.data || "Error deleting lesson"
+						error.response?.data?.message || "Error deleting lesson"
 					this.lessonIsDeleting = false
 				})
 		},

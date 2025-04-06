@@ -19,9 +19,8 @@ class LessonsService {
 		formData.append("coach_id", lesson.coach_id)
 		formData.append("student2_id", lesson.student2_id)
 		formData.append("dance_id", lesson.dance_id)
-		if (lesson.video) {
-			formData.append("video", lesson.video)
-		}
+		formData.append("video", lesson.video)
+
 		return axios
 			.post(API_URL + "lessons", formData, {
 				headers: authHeader("multipart")
