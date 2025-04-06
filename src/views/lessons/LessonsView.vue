@@ -263,6 +263,32 @@
 								clearable
 							></v-select>
 						</v-col>
+						<v-col cols="12" sm="6" md="4">
+							<div v-if="editVideoChangeDialogBtn">
+								<v-file-input
+									accept="video/*"
+									@change="onExistingLessonVideoChange"
+									label="Video Change"
+								></v-file-input>
+								<v-btn
+									@click="editVideoChangeDialogBtn = false"
+									variant="text"
+									color="error"
+									border
+								>
+									Cancel
+								</v-btn>
+							</div>
+							<v-btn
+								v-else
+								@click="editVideoChangeDialogBtn = true"
+								variant="text"
+								color="primary"
+								border
+							>
+								Change Video
+							</v-btn>
+						</v-col>
 						<v-col cols="12">
 							<v-textarea
 								v-model="editLesson.notes"
