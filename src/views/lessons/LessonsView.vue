@@ -229,7 +229,7 @@
 								:items="dances"
 								item-title="dance"
 								item-value="id"
-								:loading="isLoadingDances"
+								:loading="danceIsLoading"
 								required
 							></v-select>
 						</v-col>

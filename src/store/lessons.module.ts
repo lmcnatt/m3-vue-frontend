@@ -27,6 +27,7 @@ export const lessons = {
 		},
 		updateLesson({ commit, getters }, lesson) {
 			return lessonsService.updateLesson(lesson).then((response) => {
+				console.log(lesson)
 				response.lesson.index = getters.getLessonStateIndexByLessonId(
 					response.lesson.id
 				)

@@ -36,6 +36,7 @@ class LessonsService {
 				headers: authHeader()
 			})
 			.then((response) => {
+				console.log(response)
 				return response.data.results
 			})
 	}

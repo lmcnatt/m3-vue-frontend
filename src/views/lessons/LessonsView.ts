@@ -170,7 +170,8 @@ export default {
 					this.lessonIsUpdating = false
 				})
 				.catch((error) => {
-					this.editLessonErrorMessage = error.response.data.response
+					console.log(error)
+					this.editLessonErrorMessage = error.message
 					this.lessonIsUpdating = false
 				})
 		},
