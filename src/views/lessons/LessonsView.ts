@@ -107,6 +107,8 @@ export default {
 			this.editLessonDialog = true
 		},
 		openCreateLessonDialog() {
+			this.createLessonDialog = true
+
 			this.newLesson = {
 				title: "",
 				lesson_date: new Date(),
@@ -116,10 +118,9 @@ export default {
 				dance_id: 1,
 				video: ""
 			}
-
-			this.createLessonDialog = true
 		},
 		closeCreateLessonDialog() {
+			this.createLessonDialog = false
 			this.newLesson = {
 				title: "",
 				lesson_date: new Date(),
@@ -129,11 +130,17 @@ export default {
 				dance_id: 1,
 				video: ""
 			}
-
-			this.createLessonDialog = false
 		},
 		closeEditLessonDialog() {
-			this.editLesson = {}
+			this.editLesson = {
+				title: "",
+				lesson_date: new Date(),
+				notes: "",
+				coach_id: "",
+				student2_id: "",
+				dance_id: 1,
+				video: ""
+			}
 			this.editLessonDialog = false
 			this.editVideoChangeDialogBtn = false
 		},
@@ -147,7 +154,7 @@ export default {
 					this.lessonIsCreating = false
 				})
 				.catch((error) => {
-					this.createLessonErrorMessage = error.response.data.response
+					this.createLessonErrorMessage = error.response
 					this.lessonIsCreating = false
 				})
 		},
