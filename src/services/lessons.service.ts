@@ -26,7 +26,7 @@ class LessonsService {
 				headers: authHeader("multipart")
 			})
 			.then((response) => {
-				return response.data.results
+				return response.data.data
 			})
 	}
 
@@ -37,7 +37,7 @@ class LessonsService {
 			})
 			.then((response) => {
 				console.log(response)
-				return response.data.results
+				return response.data.data
 			})
 	}
 
@@ -47,7 +47,7 @@ class LessonsService {
 				headers: authHeader()
 			})
 			.then((response) => {
-				return response.data.results
+				return response.data.data
 			})
 	}
 	uploadLessonVideo(lesson) {
@@ -58,7 +58,7 @@ class LessonsService {
 				headers: authHeader("multipart")
 			})
 			.then((response) => {
-				return response.data.results
+				return response.data.data
 			})
 	}
 }

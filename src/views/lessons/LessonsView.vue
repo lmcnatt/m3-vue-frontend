@@ -268,6 +268,7 @@
 								<v-file-input
 									accept="video/*"
 									@change="onExistingLessonVideoChange"
+									:loading="lessonIsUpdating"
 									label="Video Change"
 								></v-file-input>
 								<v-btn

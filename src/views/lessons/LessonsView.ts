@@ -154,6 +154,7 @@ export default {
 					this.lessonIsCreating = false
 				})
 				.catch((error) => {
+					console.log(error)
 					this.createLessonErrorMessage = error.response
 					this.lessonIsCreating = false
 				})
@@ -184,8 +185,10 @@ export default {
 					this.selectedDeleteLesson = false
 					this.lessonIsDeleting = false
 					this.deleteLessonDialog = false
+					this.lessonDialog = false
 				})
 				.catch((error) => {
+					console.log(error)
 					this.deleteLessonErrorMessage = error.response.data.response
 					this.lessonIsDeleting = false
 				})
@@ -197,7 +200,7 @@ export default {
 			this.editLesson.video = video[0]
 			this.lessonIsUpdating = true
 			this.$store
-				.dispatch("lessons/updateLesson", this.editLesson)
+				.dispatch("lessons/uploadLessonVideo", this.editLesson)
 				.then(() => {
 					this.lessonIsUpdating = false
 					this.editLessonDialog = false
