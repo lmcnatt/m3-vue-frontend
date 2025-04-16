@@ -145,44 +145,37 @@ export default {
 			this.editVideoChangeDialogBtn = false
 		},
 		createLesson() {
-			try {
-				this.lessonIsCreating = true
-				this.createLessonErrorMessage = null
+			this.lessonIsCreating = true
+			this.createLessonErrorMessage = null
 
-				// If there's a video, log its size
-				if (this.newLesson.video) {
-					const fileSize = (this.newLesson.video.size / 1024 / 1024).toFixed(2) // Size in MB
-					console.log(
-						`Creating lesson with video: ${this.newLesson.video.name}, size: ${fileSize}MB`
-					)
-				}
-
-				this.$store
-					.dispatch("lessons/createLesson", this.newLesson)
-					.then(() => {
-						console.log("Lesson created successfully")
-						this.closeCreateLessonDialog()
-						this.lessonIsCreating = false
-					})
-					.catch((error) => {
-						console.error("Lesson creation error:", error)
-						// Improved error handling
-						const errorMsg =
-							error.response && error.response.data
-								? error.response.data.response ||
-								  error.response.data.message ||
-								  JSON.stringify(error.response.data)
-								: error.message || "Unknown creation error"
-
-						this.createLessonErrorMessage = errorMsg
-						this.lessonIsCreating = false
-					})
-			} catch (err) {
-				console.error("Exception during lesson creation:", err)
-				this.createLessonErrorMessage =
-					"Error creating lesson: " + (err.message || err)
-				this.lessonIsCreating = false
+			// If there's a video, log its size
+			if (this.newLesson.video) {
+				const fileSize = (this.newLesson.video.size / 1024 / 1024).toFixed(2) // Size in MB
+				console.log(
+					`Creating lesson with video: ${this.newLesson.video.name}, size: ${fileSize}MB`
+				)
 			}
+
+			this.$store
+				.dispatch("lessons/createLesson", this.newLesson)
+				.then(() => {
+					console.log("Lesson created successfully")
+					this.closeCreateLessonDialog()
+					this.lessonIsCreating = false
+				})
+				.catch((error) => {
+					console.error("Lesson creation error:", error)
+					// Improved error handling
+					const errorMsg =
+						error.response && error.response.data
+							? error.response.data.response ||
+							  error.response.data.message ||
+							  JSON.stringify(error.response.data)
+							: error.message || "Unknown creation error"
+
+					this.createLessonErrorMessage = errorMsg
+					this.lessonIsCreating = false
+				})
 		},
 		updateLesson() {
 			this.lessonIsUpdating = true
@@ -219,67 +212,52 @@ export default {
 				})
 		},
 		onExistingLessonVideoChange(e) {
-			try {
-				let video = e.target.files || e.dataTransfer.files
-				if (!video.length) return
+			let video = e.target.files || e.dataTransfer.files
+			if (!video.length) return
 
-				// Get and log file info for debugging
-				const fileSize = (video[0].size / 1024 / 1024).toFixed(2) // Size in MB
-				console.log(
-					`Uploading video: ${video[0].name}, size: ${fileSize}MB, type: ${video[0].type}`
-				)
+			// Get and log file info for debugging
+			const fileSize = (video[0].size / 1024 / 1024).toFixed(2) // Size in MB
+			console.log(
+				`Uploading video: ${video[0].name}, size: ${fileSize}MB, type: ${video[0].type}`
+			)
 
-				// Set video and start upload
-				this.editLesson.video = video[0]
-				this.lessonIsUpdating = true
-				this.$store
-					.dispatch("lessons/uploadLessonVideo", this.editLesson)
-					.then(() => {
-						console.log("Video upload successful")
-						this.lessonIsUpdating = false
-						this.editLessonDialog = false
-					})
-					.catch((error) => {
-						console.error("Video upload error: ", error)
-						// Improved error handling
-						const errorMsg =
-							error.response && error.response.data
-								? error.response.data.response ||
-								  error.response.data.message ||
-								  JSON.stringify(error.response.data)
-								: error.message || "Unknown upload error"
+			// Set video and start upload
+			this.editLesson.video = video[0]
+			this.lessonIsUpdating = true
+			this.$store
+				.dispatch("lessons/uploadLessonVideo", this.editLesson)
+				.then(() => {
+					console.log("Video upload successful")
+					this.lessonIsUpdating = false
+					this.editLessonDialog = false
+				})
+				.catch((error) => {
+					console.error("Video upload error: ", error)
+					// Improved error handling
+					const errorMsg =
+						error.response && error.response.data
+							? error.response.data.response ||
+							  error.response.data.message ||
+							  JSON.stringify(error.response.data)
+							: error.message || "Unknown upload error"
 
-						this.editLessonErrorMessage = errorMsg
-						this.lessonIsUpdating = false
-					})
-			} catch (err) {
-				console.error("Exception during video upload:", err)
-				this.editLessonErrorMessage =
-					"Error preparing video upload: " + (err.message || err)
-				this.lessonIsUpdating = false
-			}
+					this.editLessonErrorMessage = errorMsg
+					this.lessonIsUpdating = false
+				})
 		},
 		onNewLessonVideoChange(event) {
-			try {
-				this.newLesson.video = null
+			this.newLesson.video = null
 
-				if (!event || !event.target || !event.target.files) return // Safety check
+			const video = event.target.files || event.dataTransfer.files
+			if (!video.length) return
 
-				const video = event.target.files || event.dataTransfer.files
-				if (!video.length) return
+			// Get and log file info for debugging
+			const fileSize = (video[0].size / 1024 / 1024).toFixed(2) // Size in MB
+			console.log(
+				`Selected video for upload: ${video[0].name}, size: ${fileSize}MB, type: ${video[0].type}`
+			)
 
-				// Get and log file info for debugging
-				const fileSize = (video[0].size / 1024 / 1024).toFixed(2) // Size in MB
-				console.log(
-					`Selected video for upload: ${video[0].name}, size: ${fileSize}MB, type: ${video[0].type}`
-				)
-
-				this.newLesson.video = video[0]
-			} catch (err) {
-				console.error("Exception during video selection:", err)
-				this.createLessonErrorMessage =
-					"Error preparing video: " + (err.message || err)
-			}
+			this.newLesson.video = video[0]
 		},
 		formatDate(dateString: string) {
 			if (!dateString) return ""
