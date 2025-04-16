@@ -206,6 +206,7 @@ export default {
 					this.editLessonDialog = false
 				})
 				.catch((error) => {
+					console.error("Video upload error: ", error)
 					this.editLessonErrorMessage = error.response.data.response
 					this.lessonIsUpdating = false
 				})

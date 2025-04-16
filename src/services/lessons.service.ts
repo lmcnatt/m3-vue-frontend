@@ -52,6 +52,7 @@ class LessonsService {
 	}
 	uploadLessonVideo(lesson) {
 		let formData = new FormData()
+		console.log("Uploading video file:", lesson.video) // Check file object
 		formData.append("video", lesson.video)
 		return axios
 			.post(API_URL + `lessons/${lesson.id}/update_lesson_video`, formData, {
@@ -59,6 +60,10 @@ class LessonsService {
 			})
 			.then((response) => {
 				return response.data.data
+			})
+			.catch((error) => {
+				console.error("Upload request failed:", error.response || error)
+				throw error
 			})
 	}
 }
