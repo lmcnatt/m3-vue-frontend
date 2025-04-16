@@ -59,6 +59,7 @@ class LessonsService {
 				headers: authHeader("multipart")
 			})
 			.then((response) => {
+				console.log("Video upload success response:", response.data)
 				return response.data.data
 			})
 			.catch((error) => {

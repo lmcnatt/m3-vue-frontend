@@ -83,7 +83,6 @@
 					controls
 					class="lesson-video"
 					:src="selectedLesson.video"
-					alt="`${selectedLesson.title} Lesson Video`"
 				></video>
 			</div>
 
